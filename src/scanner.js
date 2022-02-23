@@ -1,9 +1,10 @@
 import './App.css';
 import QrScanner from 'qr-scanner';
+import hmacSHA512 from 'crypto-js/hmac-sha512';
+import QRCode from "qrcode.react";
+import React from "react";
 
 let qrScanner;
-//let visibilityStart = "visible";
-//let visibilityStop = "hidden";
 
 function getQrCodeData(data){
     console.log("Data of the Qr Code", data)
@@ -28,8 +29,12 @@ function stopScan(){
 }
 
 function ScannerDiv() {
+    const diarre = hmacSHA512("Message", "Key");
+    console.log(diarre)
     return (
         <div>
+            <QRCode value={diarre.toString()} />
+            <p>{diarre.toString()}</p>
             <button id="startScanBtn" onClick={() => {startScan()}}>
                 Start</button>
             <button id="stopScanBtn" style={{visibility:'hidden'}} onClick={() => {stopScan()}}>
