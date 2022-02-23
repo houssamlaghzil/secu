@@ -7,13 +7,14 @@ function startScan(){
     console.log(qrScanner);
     qrScanner.start().then(r =>
     console.log(r));
+    return qrScanner;
 }
 
 function ScannerDiv() {
     console.log("cc");
 
     return (
-        <div onLoad={startScan()}>
+        <div onLoad={startScan}>
             <video id="videoDiv"/>
         </div>
     );

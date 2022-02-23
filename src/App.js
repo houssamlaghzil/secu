@@ -2,8 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  var React = require('react');
-  var QRCode = require('qrcode.react');
+  const React = require('react');
+  const QRCode = require('qrcode.react');
 
   return (
     <div className="App">
