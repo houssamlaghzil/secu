@@ -5,7 +5,8 @@ function startScan(){
     let videoElem = document.getElementById("videoDiv");
     const qrScanner = new QrScanner(videoElem, result => console.log('decoded qr code:', result));
     console.log(qrScanner);
-    qrScanner.start();
+    qrScanner.start().then(r =>
+    console.log(r));
 }
 
 function ScannerDiv() {
