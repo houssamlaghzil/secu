@@ -6,6 +6,7 @@ function App() {
   const QRCode = require('qrcode.react');
 
   return (
+
     <div className="App">
       <QRCode value="https://www.npmjs.com/package/qrcode.react" />
     </div>

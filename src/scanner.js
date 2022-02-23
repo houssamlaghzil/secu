@@ -1,20 +1,28 @@
 import './App.css';
 import QrScanner from 'qr-scanner';
 
+let qrScanner;
+
+
 function startScan(){
     let videoElem = document.getElementById("videoDiv");
-    const qrScanner = new QrScanner(videoElem, result => console.log('decoded qr code:', result));
-    console.log(qrScanner);
+    qrScanner = new QrScanner(videoElem, result => console.log('decoded qr code:', result));
     qrScanner.start().then(r =>
     console.log(r));
-    return qrScanner;
+}
+function stopScan(){
+   qrScanner.stop();
 }
 
 function ScannerDiv() {
-    console.log("cc");
-
     return (
-        <div onLoad={startScan}>
+        <div>
+            <button value="Start" onClick={() => {
+    startScan()
+            }}>Start</button>
+            <button onClick={() => {
+    stopScan()
+            }}>Stop</button>
             <video id="videoDiv"/>
         </div>
     );
