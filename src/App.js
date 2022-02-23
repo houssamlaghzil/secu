@@ -4,9 +4,10 @@ import './App.css';
 function App() {
   var React = require('react');
   var QRCode = require('qrcode.react');
+
   return (
     <div className="App">
-      <QRCode value="https://facebook.github.io/react/" />,
+      <QRCode value="https://www.npmjs.com/package/qrcode.react" />
     </div>
   );
 }
