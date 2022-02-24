@@ -1,6 +1,5 @@
 import './App.css';
 import QrScanner from 'qr-scanner';
-import hmacSHA512 from 'crypto-js/hmac-sha512';
 import QRCode from "qrcode.react";
 import React from "react";
 var CryptoJS = require("crypto-js");
@@ -8,7 +7,8 @@ var CryptoJS = require("crypto-js");
 let qrScanner;
 
 function getQrCodeData(data){
-    console.log("Data of the Qr Code", data)
+    const uncryptedData = CryptoJS.AES.decrypt(data, process.env.REACT_APP_AES_KEY).toString(CryptoJS.enc.Utf8);
+    console.log("Data of the Qr Code", uncryptedData)
     stopScan();
 }
 
@@ -30,15 +30,21 @@ function stopScan(){
 }
 
 function ScannerDiv() {
-    const diarre = CryptoJS.AES.encrypt("coucouc la streat", "keyultrasecure");
-    const descryptDiarre = CryptoJS.AES.decrypt(diarre, "keyultrasecure").toString(CryptoJS.enc.Utf8);
-    console.log(diarre, descryptDiarre);
+    let userDataJson = {
+        name: "toto",
+        lastname : "dupont",
+        mail: "f@mail.com"
+    }
+    console.log(process.env.AES_KEY);
+    const cryptedData = CryptoJS.AES.encrypt(JSON.stringify(userDataJson), process.env.REACT_APP_AES_KEY);
+    const uncryptedData = CryptoJS.AES.decrypt(cryptedData, process.env.REACT_APP_AES_KEY).toString(CryptoJS.enc.Utf8);
+    console.log(JSON.parse(uncryptedData).name, uncryptedData);
 
     return (
         <div>
-            <QRCode value={diarre.toString()} />
-            <p>{diarre.toString()}</p>
-            <p>{descryptDiarre.toString()}</p>
+            <QRCode value={cryptedData.toString()} />
+            <p>{cryptedData.toString()}</p>
+            <p>{uncryptedData.toString()}</p>
             <button id="startScanBtn" onClick={() => {startScan()}}>
                 Start</button>
             <button id="stopScanBtn" style={{visibility:'hidden'}} onClick={() => {stopScan()}}>
