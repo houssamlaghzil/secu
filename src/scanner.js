@@ -10,6 +10,7 @@ function getQrCodeData(data){
     const uncryptedData = CryptoJS.AES.decrypt(data, process.env.REACT_APP_AES_KEY).toString(CryptoJS.enc.Utf8);
     console.log("Data of the Qr Code", uncryptedData)
     stopScan();
+    return uncryptedData;
 }
 
 function startScan(){
@@ -53,4 +54,4 @@ function ScannerDiv() {
     );
 }
 
-export default ScannerDiv;
+export {ScannerDiv, getQrCodeData};
