@@ -6,19 +6,19 @@ var CryptoJS = require("crypto-js");
 
 let qrScanner;
 
-function getQrCodeData(data){
+export function getQrCodeData(data){
     const uncryptedData = CryptoJS.AES.decrypt(data, process.env.REACT_APP_AES_KEY).toString(CryptoJS.enc.Utf8);
     console.log("Data of the Qr Code", uncryptedData)
-    stopScan();
     return uncryptedData;
 }
 
-function startScan(){
+export function startScan(){
     document.getElementById("startScanBtn").style.visibility = "hidden";
     document.getElementById("stopScanBtn").style.visibility = "visible";
     let videoElem = document.getElementById("videoDiv");
     qrScanner = new QrScanner(videoElem, result => {
         getQrCodeData(result)
+        stopScan();
     });
     qrScanner.start().then(r => {
         console.log("Scanner started");
@@ -54,4 +54,4 @@ function ScannerDiv() {
     );
 }
 
-export {ScannerDiv, getQrCodeData};
+export default ScannerDiv;

@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import {ScannerDiv} from './scanner';
 import reportWebVitals from './reportWebVitals';
+import ScannerDiv from "./scanner";
 
 ReactDOM.render(
   <React.StrictMode>
