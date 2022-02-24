@@ -7,7 +7,6 @@ import ScannerDiv from "./scanner";
 
 ReactDOM.render(
   <React.StrictMode>
-      <App />
       <ScannerDiv/>
   </React.StrictMode>,
   document.getElementById('root')

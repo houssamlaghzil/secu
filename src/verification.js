@@ -26,7 +26,6 @@ function displayVerifDiv(){
     document.getElementById("scanDiv").style.visibility = "hidden";
     document.body.innerHTML += verifDiv();
     document.getElementById("validBtn").onclick = checkNumber;
-    console.log(randomizeNumber); // Remove later
 }
 
 function verifDiv(){
@@ -40,7 +39,28 @@ function verifDiv(){
 }
 
 export function sendMessage(phoneNumber){
-    console.log(phoneNumber)
     randomizeNumber = generateNumber();
+    let dataBody = {
+        to: phoneNumber,
+        body: randomizeNumber
+    };
+    console.log(dataBody);
+    //this.setState({ submitting: true });
+    fetch('/api/messages', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataBody)
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                console.log("sucess");
+            } else {
+                console.log("err");
+                console.log(data);
+            }
+        });
     displayVerifDiv();
 }
