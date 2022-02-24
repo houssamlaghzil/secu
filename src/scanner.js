@@ -13,7 +13,6 @@ export function getQrCodeData(data){
     if(uncryptedData === ""){
         return "Wrong format";
     }
-    sendMessage(JSON.parse(uncryptedData).phoneNumber)
     return uncryptedData;
 }
 
@@ -22,7 +21,12 @@ export function startScan(){
     document.getElementById("stopScanBtn").style.visibility = "visible";
     let videoElem = document.getElementById("videoDiv");
     qrScanner = new QrScanner(videoElem, result => {
-        getQrCodeData(result)
+        let resultData = getQrCodeData(result);
+
+        if(resultData !== "Wrong format"){
+            sendMessage(JSON.parse(resultData).phoneNumber)
+        }
+
         stopScan();
     });
     qrScanner.start().then(r => {
@@ -30,9 +34,9 @@ export function startScan(){
     });
 }
 function stopScan(){
+    qrScanner.stop();
     document.getElementById("startScanBtn").style.visibility = "visible";
     document.getElementById("stopScanBtn").style.visibility = "hidden";
-    qrScanner.stop();
 }
 
 function ScannerDiv() {

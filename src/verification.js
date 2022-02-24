@@ -1,3 +1,7 @@
+import ScannerDiv from "./scanner";
+import ReactDOM from "react-dom";
+import React from "react";
+
 let randomizeNumber;
 
 function getRandomInt(max) {
@@ -11,7 +15,15 @@ export function generateNumber(){
 function checkNumber(){
     let userValue = document.getElementById("numberInput").value;
     if(parseInt(userValue) === randomizeNumber){
-        document.getElementById("resultDiv").innerHTML="Bravo !!";
+        document.getElementById("resultDiv").innerHTML='<p>"Bravo !!"</p> <button id="backButton">Retour</button>';
+        document.getElementById("backButton").onclick= ()=> {
+            ReactDOM.render(
+                <React.StrictMode>
+                    <ScannerDiv/>
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        }
     }
     else{
         document.getElementById("resultDiv").innerHTML="Mauvais code !!";
@@ -19,19 +31,17 @@ function checkNumber(){
 }
 
 function displayVerifDiv(){
-    document.getElementById("scanDiv").style.visibility = "hidden";
-    document.body.innerHTML += verifDiv();
-    document.getElementById("validBtn").onclick = checkNumber;
-}
-
-function verifDiv(){
-    return (
-        '<div>'+
-            '<input id="numberInput" type="number"/>'+
-            '<button id="validBtn"> Confirmer </button>'+
-            '<p id="resultDiv"></p>'+
-        '</div>'
+    ReactDOM.render(
+        <React.StrictMode>
+            <div>
+                <input id="numberInput" type="number"/>
+                <button id="validBtn"> Confirmer </button>
+                <p id="resultDiv"/>
+            </div>
+        </React.StrictMode>,
+        document.getElementById('root')
     );
+    document.getElementById("validBtn").onclick = checkNumber;
 }
 
 export function sendMessage(phoneNumber){
