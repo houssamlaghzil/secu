@@ -1,7 +1,3 @@
-import QRCode from "qrcode.react";
-import React from "react";
-import {startScan} from "./scanner";
-
 let randomizeNumber;
 
 function getRandomInt(max) {
@@ -44,7 +40,6 @@ export function sendMessage(phoneNumber){
         to: phoneNumber,
         body: randomizeNumber
     };
-    console.log(dataBody);
     //this.setState({ submitting: true });
     fetch('/api/messages', {
         method: 'POST',
@@ -56,7 +51,7 @@ export function sendMessage(phoneNumber){
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                console.log("sucess");
+                console.log("Success send message");
             } else {
                 console.log("err");
                 console.log(data);
