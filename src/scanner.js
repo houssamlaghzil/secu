@@ -35,7 +35,6 @@ function ScannerDiv() {
         lastname : "dupont",
         mail: "f@mail.com"
     }
-    console.log(process.env.AES_KEY);
     const cryptedData = CryptoJS.AES.encrypt(JSON.stringify(userDataJson), process.env.REACT_APP_AES_KEY);
     const uncryptedData = CryptoJS.AES.decrypt(cryptedData, process.env.REACT_APP_AES_KEY).toString(CryptoJS.enc.Utf8);
     console.log(JSON.parse(uncryptedData).name, uncryptedData);
