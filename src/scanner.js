@@ -2,13 +2,10 @@ import './App.css';
 import QrScanner from 'qr-scanner';
 import QRCode from "qrcode.react";
 import React from "react";
+import {sendMessage} from "./verification";
 var CryptoJS = require("crypto-js");
 
 let qrScanner;
-
-function sendMessage(phoneNumber){
-    console.log(phoneNumber)
-}
 
 export function getQrCodeData(data){
     const uncryptedData = CryptoJS.AES.decrypt(data, process.env.REACT_APP_AES_KEY).toString(CryptoJS.enc.Utf8);
@@ -47,12 +44,9 @@ function ScannerDiv() {
     }
     const cryptedData = CryptoJS.AES.encrypt(JSON.stringify(userDataJson), process.env.REACT_APP_AES_KEY);
     const uncryptedData = CryptoJS.AES.decrypt(cryptedData, process.env.REACT_APP_AES_KEY).toString(CryptoJS.enc.Utf8);
-
+    //<QRCode value={cryptedData.toString()} />
     return (
-        <div>
-            <QRCode value={cryptedData.toString()} />
-            <p>{cryptedData.toString()}</p>
-            <p>{uncryptedData.toString()}</p>
+        <div id="scanDiv">
             <button id="startScanBtn" onClick={() => {startScan()}}>
                 Start</button>
             <button id="stopScanBtn" style={{visibility:'hidden'}} onClick={() => {stopScan()}}>
