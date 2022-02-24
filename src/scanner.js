@@ -6,12 +6,17 @@ var CryptoJS = require("crypto-js");
 
 let qrScanner;
 
+function sendMessage(phoneNumber){
+    console.log(phoneNumber)
+}
+
 export function getQrCodeData(data){
     const uncryptedData = CryptoJS.AES.decrypt(data, process.env.REACT_APP_AES_KEY).toString(CryptoJS.enc.Utf8);
     console.log("Data of the Qr Code", uncryptedData)
     if(uncryptedData === ""){
         return "Wrong format";
     }
+    sendMessage(JSON.parse(uncryptedData).phoneNumber)
     return uncryptedData;
 }
 
@@ -37,11 +42,11 @@ function ScannerDiv() {
     let userDataJson = {
         name: "toto",
         lastname : "dupont",
-        mail: "f@mail.com"
+        mail: "f@mail.com",
+        phoneNumber: "+33695845515"
     }
     const cryptedData = CryptoJS.AES.encrypt(JSON.stringify(userDataJson), process.env.REACT_APP_AES_KEY);
     const uncryptedData = CryptoJS.AES.decrypt(cryptedData, process.env.REACT_APP_AES_KEY).toString(CryptoJS.enc.Utf8);
-    console.log(JSON.parse(uncryptedData).name, uncryptedData);
 
     return (
         <div>
