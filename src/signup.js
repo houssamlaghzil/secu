@@ -35,7 +35,12 @@ class Signup extends Component {
             .then(data => {
                 console.log('test: '+data.status)
                 if (data.status === 200) {
-                    const cryptedData = CryptoJS.AES.encrypt(JSON.stringify(this.state.user), process.env.REACT_APP_AES_KEY);
+                    const userData = {
+                        first_name: this.state.user.first_name,
+                        last_name: this.state.user.last_name,
+                        phoneNumber: this.state.user.pn,
+                    }
+                    const cryptedData = CryptoJS.AES.encrypt(JSON.stringify(userData), process.env.REACT_APP_AES_KEY);
                     document.getElementById("QRcode").style.visibility = "visible";
                     this.setState({
                         dataQRcode: cryptedData,

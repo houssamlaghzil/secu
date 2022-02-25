@@ -26,7 +26,7 @@ export function checkUserExist(userPhoneNumber){
                     window.alert("Utilisateur inexistant")
                 }
             } else {
-                window.alert("Utilisateur inexistant")
+                window.alert("une erreur est apparue")
                 console.log(data);
             }
         });

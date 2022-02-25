@@ -110,8 +110,11 @@ app.post('/api/signup', (req, res) =>{
     const pn = req.body.pn;
     new Promise((resolve, reject) => {
         db.query("INSERT INTO users (first_name, last_name, phone_number) VALUES (?, ?, ?)", [firstname, lastname, pn], function (err, result) {
-            if (err) reject(err);
-            console.log('The solution is: ', result);
+            if (err) {
+                console.log(err)
+                reject(err)
+            };
+            console.log('result: ', result);
             resolve(result);
         });
     }).then(response => {
