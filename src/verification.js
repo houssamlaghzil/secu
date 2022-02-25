@@ -44,14 +44,6 @@ function checkNumber(){
     let userValue = document.getElementById("numberInput").value;
     if(parseInt(userValue) === randomizeNumber){
         window.alert("Bravo tu peux entrer BG");
-        document.getElementById("backButton").onclick= ()=> {
-            ReactDOM.render(
-                <React.StrictMode>
-                    <ScannerDiv/>
-                </React.StrictMode>,
-                document.getElementById('root')
-            );
-        }
     }
     else{
         window.alert("Mauvais code")
@@ -70,6 +62,14 @@ function displayVerifDiv(){
         document.getElementById('root')
     );
     document.getElementById("validBtn").onclick = checkNumber;
+    document.getElementById("backButton").onclick= ()=> {
+        ReactDOM.render(
+            <React.StrictMode>
+                <ScannerDiv/>
+            </React.StrictMode>,
+            document.getElementById('root')
+        );
+    }
 }
 
 export function sendMessage(phoneNumber){
