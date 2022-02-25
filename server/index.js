@@ -103,6 +103,35 @@ app.post('/api/messages', (req, res) => {
         });
 });
 
+app.post('/api/signup', (req, res) =>{
+    res.header('Content-Type', 'application/json');
+    const firstname = req.body.firstname;
+    const lastname = req.body.lastname;
+    const pn = req.body.pn;
+    new Promise((resolve, reject) => {
+        db.query("INSERT INTO users (first_name, last_name, phone_number) VALUES (?, ?, ?)", [firstname, lastname, pn], function (err, result) {
+            if (err) reject(err);
+            console.log('la solution est (hugo): ', result);
+            resolve(result);
+        });
+    }).then(response => {
+        console.log("data", response);
+        if(response.length >0){
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({userFound: true, status:200}));
+        }
+        else{
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({userFound: false, status:404}));
+        }
+    })
+        .catch(err =>
+        {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({userFound: false, status:500}));
+        })
+})
+
 
 app.listen(3001, () =>
     console.log('Express server is running on localhost:3001')

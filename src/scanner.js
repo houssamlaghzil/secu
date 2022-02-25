@@ -3,6 +3,7 @@ import QrScanner from 'qr-scanner';
 import QRCode from "qrcode.react";
 import React from "react";
 import {checkUserExist, sendMessage} from "./verification";
+import Login from "./login";
 var CryptoJS = require("crypto-js");
 
 let qrScanner;
@@ -50,6 +51,7 @@ function ScannerDiv() {
     //<QRCode value={cryptedData.toString()} />
     return (
         <div id="scanDiv">
+            <Login />
             <button id="startScanBtn" onClick={() => {startScan()}}>
                 Start</button>
             <button id="stopScanBtn" style={{visibility:'hidden'}} onClick={() => {stopScan()}}>
