@@ -4,6 +4,33 @@ import React from "react";
 
 let randomizeNumber;
 
+export function checkUserExist(userPhoneNumber){
+    fetch('/api/usersbynumber', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            phoneNumber: userPhoneNumber
+        })
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status===200) {
+                console.log("Success");
+                if(data.userFound === true){
+                    sendMessage(userPhoneNumber);
+                }
+                else {
+                    window.alert("Utilisateur inexistant")
+                }
+            } else {
+                window.alert("Utilisateur inexistant")
+                console.log(data);
+            }
+        });
+}
+
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
@@ -15,7 +42,7 @@ export function generateNumber(){
 function checkNumber(){
     let userValue = document.getElementById("numberInput").value;
     if(parseInt(userValue) === randomizeNumber){
-        document.getElementById("resultDiv").innerHTML='<p>"Bravo !!"</p> <button id="backButton">Retour</button>';
+        window.alert("Bravo tu peux entrer BG");
         document.getElementById("backButton").onclick= ()=> {
             ReactDOM.render(
                 <React.StrictMode>
@@ -26,7 +53,7 @@ function checkNumber(){
         }
     }
     else{
-        document.getElementById("resultDiv").innerHTML="Mauvais code !!";
+        window.alert("Mauvais code")
     }
 }
 
@@ -36,7 +63,7 @@ function displayVerifDiv(){
             <div>
                 <input id="numberInput" type="number"/>
                 <button id="validBtn"> Confirmer </button>
-                <p id="resultDiv"/>
+                <button id="backButton">Retour</button>
             </div>
         </React.StrictMode>,
         document.getElementById('root')

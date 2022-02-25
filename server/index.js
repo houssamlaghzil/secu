@@ -24,7 +24,7 @@ let db = mysql.createConnection(
     valuesBdd
 );
 
-app.get('/api/testgetter', async (req, res) => {
+/*app.get('/api/testgetter', async (req, res) => {
     new Promise((resolve, reject) => {
         db.query("SELECT * FROM users WHERE id = 1 ", function (err, result) {
             if (err) reject(err);
@@ -37,6 +37,34 @@ app.get('/api/testgetter', async (req, res) => {
         res.send(JSON.stringify({user: response}));
     })
         .catch(err => console.log(err))
+});
+*/
+
+app.post('/api/usersbynumber', async (req, res) => {
+    res.header('Content-Type', 'application/json');
+    const phoneNumber = req.body.phoneNumber;
+    new Promise((resolve, reject) => {
+        db.query("SELECT * FROM users WHERE phone_number = ? ", [phoneNumber], function (err, result) {
+            if (err) reject(err);
+            console.log('The solution is: ', result);
+            resolve(result);
+        });
+    }).then(response => {
+        console.log("data", response);
+        if(response.length >0){
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({userFound: true, status:200}));
+        }
+        else{
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({userFound: false}));
+        }
+    })
+        .catch(err =>
+        {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify({userFound: false}));
+        })
 });
 
 app.get('/api/greeting', (req, res) => {

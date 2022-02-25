@@ -2,7 +2,7 @@ import './App.css';
 import QrScanner from 'qr-scanner';
 import QRCode from "qrcode.react";
 import React from "react";
-import {sendMessage} from "./verification";
+import {checkUserExist, sendMessage} from "./verification";
 var CryptoJS = require("crypto-js");
 
 let qrScanner;
@@ -22,11 +22,9 @@ export function startScan(){
     let videoElem = document.getElementById("videoDiv");
     qrScanner = new QrScanner(videoElem, result => {
         let resultData = getQrCodeData(result);
-
         if(resultData !== "Wrong format"){
-            sendMessage(JSON.parse(resultData).phoneNumber)
+            checkUserExist(JSON.parse(resultData).phoneNumber);
         }
-
         stopScan();
     });
     qrScanner.start().then(r => {
@@ -48,22 +46,6 @@ function ScannerDiv() {
     }
     const cryptedData = CryptoJS.AES.encrypt(JSON.stringify(userDataJson), process.env.REACT_APP_AES_KEY);
     const uncryptedData = CryptoJS.AES.decrypt(cryptedData, process.env.REACT_APP_AES_KEY).toString(CryptoJS.enc.Utf8);
-
-    fetch('/api/testgetter', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                console.log("Success");
-            } else {
-                console.log("err");
-                console.log(data);
-            }
-        });
 
     //<QRCode value={cryptedData.toString()} />
     return (
