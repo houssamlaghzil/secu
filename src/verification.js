@@ -5,7 +5,6 @@ import React from "react";
 let randomizeNumber;
 
 export function checkUserExist(userPhoneNumber){
-    console.log(process.env.REACT_APP_BDD_TOKEN)
     fetch('/api/usersbynumber', {
         method: 'POST',
         headers: {
