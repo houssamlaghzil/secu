@@ -48,6 +48,23 @@ function ScannerDiv() {
     }
     const cryptedData = CryptoJS.AES.encrypt(JSON.stringify(userDataJson), process.env.REACT_APP_AES_KEY);
     const uncryptedData = CryptoJS.AES.decrypt(cryptedData, process.env.REACT_APP_AES_KEY).toString(CryptoJS.enc.Utf8);
+
+    fetch('/api/testgetter', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Success");
+            } else {
+                console.log("err");
+                console.log(data);
+            }
+        });
+
     //<QRCode value={cryptedData.toString()} />
     return (
         <div id="scanDiv">
