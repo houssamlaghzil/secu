@@ -42,9 +42,16 @@ let db = mysql.createConnection(
 
 app.post('/api/usersbynumber', async (req, res) => {
     res.header('Content-Type', 'application/json');
+    console.log(req.body.token, process.env.BDD_TOKEN)
+    if(typeof req.body.token === "undefined"){
+        res.send(JSON.stringify({status:401}));
+        return}
+    else if(req.body.token !== process.env.BDD_TOKEN){
+        res.send(JSON.stringify({status:403}));
+        return}
     const phoneNumber = req.body.phoneNumber;
     new Promise((resolve, reject) => {
-        db.query("SELECT * FROM users WHERE phone_number = ? ", [phoneNumber], function (err, result) {
+        db.query("SELECT phone_number FROM users WHERE phone_number = ? ", [phoneNumber], function (err, result) {
             if (err) reject(err);
             console.log('The solution is: ', result);
             resolve(result);
@@ -57,13 +64,13 @@ app.post('/api/usersbynumber', async (req, res) => {
         }
         else{
             res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify({userFound: false}));
+            res.send(JSON.stringify({userFound: false, status:404}));
         }
     })
         .catch(err =>
         {
             res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify({userFound: false}));
+            res.send(JSON.stringify({userFound: false, status:500}));
         })
 });
 
@@ -75,6 +82,12 @@ app.get('/api/greeting', (req, res) => {
 
 app.post('/api/messages', (req, res) => {
     res.header('Content-Type', 'application/json');
+    if(typeof req.body.token === "undefined"){
+        res.send(JSON.stringify({status:401}));
+        return}
+    else if(req.body.token !== process.env.BDD_TOKEN){
+        res.send(JSON.stringify({status:403}));
+        return}
     client.messages
         .create({
             from: process.env.REACT_APP_TWILIO_PHONE_NUMBER,

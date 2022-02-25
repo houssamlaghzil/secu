@@ -5,13 +5,15 @@ import React from "react";
 let randomizeNumber;
 
 export function checkUserExist(userPhoneNumber){
+    console.log(process.env.REACT_APP_BDD_TOKEN)
     fetch('/api/usersbynumber', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            phoneNumber: userPhoneNumber
+            phoneNumber: userPhoneNumber,
+            token: process.env.REACT_APP_BDD_TOKEN
         })
     })
         .then(res => res.json())
@@ -75,7 +77,8 @@ export function sendMessage(phoneNumber){
     randomizeNumber = generateNumber();
     let dataBody = {
         to: phoneNumber,
-        body: randomizeNumber
+        body: randomizeNumber,
+        token: process.env.REACT_APP_BDD_TOKEN
     };
     //this.setState({ submitting: true });
     fetch('/api/messages', {
