@@ -111,24 +111,24 @@ app.post('/api/signup', (req, res) =>{
     new Promise((resolve, reject) => {
         db.query("INSERT INTO users (first_name, last_name, phone_number) VALUES (?, ?, ?)", [firstname, lastname, pn], function (err, result) {
             if (err) reject(err);
-            console.log('la solution est (hugo): ', result);
+            console.log('The solution is: ', result);
             resolve(result);
         });
     }).then(response => {
         console.log("data", response);
-        if(response.length >0){
+        if(response !== undefined){
             res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify({userFound: true, status:200}));
+            res.send(JSON.stringify({userSignUp: true, status:200}));
         }
         else{
             res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify({userFound: false, status:404}));
+            res.send(JSON.stringify({userSignUp: false, status:404}));
         }
     })
         .catch(err =>
         {
             res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify({userFound: false, status:500}));
+            res.send(JSON.stringify({userSignUp: false, status:500}));
         })
 })
 

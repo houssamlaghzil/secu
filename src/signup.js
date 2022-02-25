@@ -1,10 +1,18 @@
 import React, {Component} from 'react';
-import './login.css';
+import './signup.css';
+import CryptoJS from "crypto-js";
+var QRCode = require('qrcode.react');
 
-class Login extends Component {
+function hiddenQRcode() {
+    document.getElementById("hiddenButton").style.visibility = "hidden";
+    document.getElementById("QRcode").style.visibility = "hidden";
+}
+
+class Signup extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            dataQRcode: '',
             user: {
                 firstname: '',
                 lastname: '',
@@ -25,8 +33,12 @@ class Login extends Component {
             body: JSON.stringify(this.state.user)
         }).then(res => res.json())
             .then(data => {
-                if (data.success) {
+                console.log('test: '+data.status)
+                if (data.status === 200) {
+                    const cryptedData = CryptoJS.AES.encrypt(JSON.stringify(this.state.user), process.env.REACT_APP_AES_KEY);
+                    document.getElementById("QRcode").style.visibility = "visible";
                     this.setState({
+                        dataQRcode: cryptedData,
                         user: {
                             firstname: '',
                             lastname: '',
@@ -35,25 +47,27 @@ class Login extends Component {
                     });
                 }
             });
-        console.log(this.state.user.firstname);
-        console.log(this.state.user.lastname);
-        console.log(this.state.user.pn);
     }
 
     onHandleChange(event) {
         const name = event.target.getAttribute('name');
         this.setState({
-            user: { ...this.state.user, [name]: event.target.value }
+            user: {...this.state.user, [name]: event.target.value}
         });
     }
 
     render() {
+        const cryptedData = CryptoJS.AES.encrypt(JSON.stringify(this.state.user), process.env.REACT_APP_AES_KEY);
         return (
             <form
                 onSubmit={this.onSubmit}
             >
                 <div className="signup">
                     <label for="chk" aria-hidden="true">Sign up</label>
+                    <div className="QRcode" id="QRcode" style={{visibility:'hidden'}}>
+                        <QRCode value={this.state.dataQRcode.toString()}/>
+                    </div>
+                    <button id="hiddenButton" onClick={() => {hiddenQRcode()}} style={{visibility:'hidden'}}>cacher</button>
                     <input type="text" name="firstname" placeholder="First name" required=""
                            value={this.state.user.firstname}
                            onChange={this.onHandleChange}
@@ -62,7 +76,7 @@ class Login extends Component {
                            value={this.state.user.lastname}
                            onChange={this.onHandleChange}
                     />
-                    <input type="number" name="pn" placeholder="Phone number" required=""
+                    <input type="text" name="pn" placeholder="Phone number" required=""
                            value={this.state.user.pn}
                            onChange={this.onHandleChange}
                     />
@@ -73,4 +87,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default Signup;
